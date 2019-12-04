@@ -10,7 +10,7 @@ public class Computer {
 	private String name = "";
 	private LocalDateTime introduced ;	
 	private LocalDateTime discontinued;
-	private Company company = new Company();
+	private Company company;
 	
 	public Computer (long id, String name, LocalDateTime introduced, LocalDateTime discontinued, Company company) {
 		this.id = id;

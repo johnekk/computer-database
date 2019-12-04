@@ -6,5 +6,5 @@ import com.excilys.cdb.model.Company;
 public interface ICompanyDAO {
 	
 	public Company findAllCompanies(Company company) 	throws DAOException;
-
+	
 }
