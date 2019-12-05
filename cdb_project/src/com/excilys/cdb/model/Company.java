@@ -4,6 +4,7 @@ public class Company {
 	private int id = 0;
 	
 	private String name = "";
+	public Company() {}
 	
 	public Company (int id, String name) {
 		this.id = id;
@@ -26,4 +27,10 @@ public class Company {
 		this.name = name;
 	}
 
+	@Override
+	public String toString() {
+		return "Name of company : " + this.getName();
+	}
+
+	
 }

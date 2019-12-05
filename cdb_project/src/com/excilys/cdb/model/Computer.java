@@ -6,13 +6,15 @@ import com.excilys.cdb.model.Company;
 
 public class Computer {
 
-	private long id = 0;
+	private int id = 0;
 	private String name = "";
 	private LocalDateTime introduced ;	
 	private LocalDateTime discontinued;
 	private Company company;
 	
-	public Computer (long id, String name, LocalDateTime introduced, LocalDateTime discontinued, Company company) {
+	public Computer() {}
+	
+	public Computer (int id, String name, LocalDateTime introduced, LocalDateTime discontinued, Company company) {
 		this.id = id;
 		this.name = name;
 		this.introduced = introduced;
@@ -21,11 +23,11 @@ public class Computer {
 	}
 	
 	
-	public long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -63,6 +65,18 @@ public class Computer {
 
 	public void setCompany(Company company) {
 		this.company = company;
+	}
+
+
+	@Override
+	public String toString() {
+		String str = 	"Name : " + this.getName() + "\n";
+		str += 			"Date of birth : " + this.getIntroduced() + "\n";
+		str += 			"Date of death : " + this.getDiscontinued() + "\n";
+		str +=			this.company.toString();
+		str +=			"\n.....................................\n";
+		
+		return str;
 	}
 	
 }
