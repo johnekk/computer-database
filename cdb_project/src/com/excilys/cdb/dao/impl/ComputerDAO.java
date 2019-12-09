@@ -28,10 +28,24 @@ public class ComputerDAO {
 	
 	private final static String DELETE_COMPUTER = "DELETE * FROM computer WHERE id = ?";
 	
+	/** START Singleton.CompanyDAO -- Lazy-Loading */
+
+	// Private Constructor
+	private static ComputerDAO computerDAO;
+	
+	// Point d'accès pour l'instance unique du singleton 
+	public static ComputerDAO getComputerDAOInstance() {
+		if (computerDAO == null) {
+			computerDAO = new ComputerDAO();
+		}
+		return computerDAO;
+	}
+	
+	/** END Singleton.CompanyDAO */
 	
 	public Computer createComputer(Computer computer) throws DAOException {
 		try {
-			connect = MySQLConnection.myConnection();
+			connect = MySQLConnection.getConnectionInstance();
 			statement = connect.prepareStatement(CREATE_COMPUTER);
 			System.out.println("Connected !!!");
 			
@@ -56,7 +70,7 @@ public class ComputerDAO {
 		
 		try {
 			/** On se connecte, on prépare la requete, on l'éxécute et on récupère le resultat*/
-			connect = MySQLConnection.myConnection();
+			connect = MySQLConnection.getConnectionInstance();
 			statement = connect.prepareStatement(FIND_ALL_COMPUTERS);
 			System.out.println("Connected !!!");
 			
@@ -81,7 +95,7 @@ public class ComputerDAO {
 	public Optional<Computer> findComputerById(int id) throws DAOException {
 		
 		try {
-			connect = MySQLConnection.myConnection();
+			connect = MySQLConnection.getConnectionInstance();
 			statement = connect.prepareStatement(FIND_COMPUTER_BY_ID);
 			
 			System.out.println("Connected !!!");
@@ -106,7 +120,7 @@ public class ComputerDAO {
 	public Computer updateComputer(Computer computer) throws DAOException {
 
 		try {
-			connect = MySQLConnection.myConnection();
+			connect = MySQLConnection.getConnectionInstance();
 			statement = connect.prepareStatement(UPDATE_COMPUTER);
 			System.out.println("Connected !!!");
 			
@@ -125,7 +139,7 @@ public class ComputerDAO {
 
 	public void deleteComputer(int id) throws DAOException {
 		try {
-			connect = MySQLConnection.myConnection();
+			connect = MySQLConnection.getConnectionInstance();
 			statement = connect.prepareStatement(DELETE_COMPUTER);
 			statement.executeUpdate();
 			

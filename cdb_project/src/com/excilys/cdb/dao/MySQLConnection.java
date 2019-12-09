@@ -13,12 +13,10 @@ public class MySQLConnection {
 	private static Connection connect;
 	
 	/** Méthode qui retourne notre instance*/
-	public static Connection myConnection() throws DAOConfigurationException {
+	public static Connection getConnectionInstance() throws DAOConfigurationException {
 		if(connect == null) {
 			try {
 				connect = DriverManager.getConnection(url, user, password);
-				System.out.println("Connexion établie avec succès");
-				//throw new DAOConfigurationException("Connexion réussit!");
 			} catch (SQLException sqle) {
 				throw new DAOConfigurationException("Erreur lors de la connexion: " + sqle);
 			}	
@@ -32,7 +30,6 @@ public class MySQLConnection {
 			try {
 				connect.close();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

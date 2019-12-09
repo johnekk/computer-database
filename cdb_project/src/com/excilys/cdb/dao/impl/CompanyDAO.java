@@ -18,16 +18,34 @@ public class CompanyDAO {
 	private PreparedStatement statement;
 	private ResultSet res;
 	
+	private final static String FIND_ALL_COMPANIES = "SELECT ca.id, ca.name FROM company ca";
+	
+	/** START Singleton.CompanyDAO -- Lazy-Loading */
+
+	// Private Constructor
+	private CompanyDAO() {};
+	
+	private static CompanyDAO companyDAO = null;
+	
+	// Point d'accès pour l'instance unique du singleton 
+	public static CompanyDAO getCompanyDAOInstance() {
+		if (companyDAO == null) {
+			companyDAO = new CompanyDAO();
+		}
+		return companyDAO;
+	}
+	
+	/** END Singleton.CompanyDAO */
 	
 	public ArrayList<Company> findAllCompanies() throws DAOException {
-		final String query = "SELECT ca.id, ca.name FROM company ca"; 	
+
 		ArrayList<Company> c = new ArrayList<>();
-		
+	
 		try {
 			/** On se connecte, on prépare la requete, on l'éxécute et on récupère le resultat*/
-			connect = MySQLConnection.myConnection();
-			statement = this.connect.prepareStatement(query);
-			res = statement.executeQuery(query);
+			connect = MySQLConnection.getConnectionInstance();
+			statement = this.connect.prepareStatement(FIND_ALL_COMPANIES);
+			res = statement.executeQuery(FIND_ALL_COMPANIES);
 			
 			while (res.next()) {
 				c.add(
@@ -39,6 +57,7 @@ public class CompanyDAO {
 			}
 			
 		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new DAOException( e );
 		}
 		return c;
