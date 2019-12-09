@@ -7,6 +7,6 @@ import com.excilys.cdb.model.Company;
 
 public class CompanyService {
 	
-	public ArrayList<Company> findAllCompanies(ArrayList<Company> c) throws DAOException { return c; };
+	public ArrayList<Company> findAllCompanies(ArrayList<Company> company) throws DAOException { return company; };
 
 }
