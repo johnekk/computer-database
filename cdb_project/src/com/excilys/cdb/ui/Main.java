@@ -1,4 +1,4 @@
-package com.excilys.cdb.main;
+package com.excilys.cdb.ui;
 
 import java.util.ArrayList;
 

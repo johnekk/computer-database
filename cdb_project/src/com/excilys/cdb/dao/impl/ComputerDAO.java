@@ -4,17 +4,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Types;
 
 import java.util.ArrayList;
 import java.util.Optional;
-import java.time.LocalDateTime;
 
 import com.excilys.cdb.dao.MySQLConnection;
 import com.excilys.cdb.dao.exceptions.DAOException;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
-import com.excilys.cdb.dao.impl.CompanyDAO;;
 
 public class ComputerDAO {
 	
@@ -81,7 +78,7 @@ public class ComputerDAO {
 		return c;
 	}
 
-	public Optional<Computer> findComputerById(long id) throws DAOException {
+	public Optional<Computer> findComputerById(int id) throws DAOException {
 		
 		try {
 			connect = MySQLConnection.myConnection();
@@ -136,7 +133,6 @@ public class ComputerDAO {
 		} catch (SQLException error) {
 			throw new DAOException(error);
 		}
-	
 	}
 
 }

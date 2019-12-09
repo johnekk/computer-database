@@ -11,8 +11,7 @@ public class Computer {
 	private LocalDateTime introduced ;	
 	private LocalDateTime discontinued;
 	private Company company;
-	
-	public Computer() {}
+
 	
 	public Computer (int id, String name, LocalDateTime introduced, LocalDateTime discontinued, Company company) {
 		this.id = id;
