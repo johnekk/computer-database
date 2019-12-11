@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import com.excilys.cdb.dao.MySQLConnection;
@@ -19,14 +20,14 @@ public class ComputerDAO {
 	private PreparedStatement statement;
 	private ResultSet res;
 	
-	private final static String CREATE_COMPUTER = "INSERT INTO computer (name, introduced, discontinued, company_id) VALUES (?,?,?,?)";
-	
-	private final static String FIND_ALL_COMPUTERS = "SELECT cu.*, ca.id, ca.name AS 'company_name' FROM computer cu, company ca WHERE ca.id = cu.company_id";
-	private final static String FIND_COMPUTER_BY_ID = "SELECT cu.*, ca.id, ca.name AS 'company_name' FROM computer cu, company ca WHERE ca.id = cu.company_id AND id = ?";
-	
-	private final static String UPDATE_COMPUTER = "UPDATE computer SET name = ?, introduce = ?, discontinued = ?, company_id = ? WHERE id = ?";
-	
-	private final static String DELETE_COMPUTER = "DELETE * FROM computer WHERE id = ?";
+	private final static String CREATE_COMPUTER 	= "INSERT INTO computer (name, introduced, discontinued, company_id) VALUES (?,?,?,?)";
+
+	private final static String FIND_ALL_COMPUTERS 	= "SELECT computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id , company.name AS 'company_name' FROM computer, company WHERE company.id = computer.company_id";
+	private final static String FIND_COMPUTER_BY_ID = "SELECT cu.id, cu.name, cu.introduced, cu.discontinued, cu,company,name, ca.name AS 'company_name' FROM computer cu, company ca WHERE ca.id = cu.company_id AND id = ?";
+
+	private final static String UPDATE_COMPUTER 	= "UPDATE computer SET name = ?, introduce = ?, discontinued = ?, company_id = ? WHERE id = ?";
+
+	private final static String DELETE_COMPUTER 	= "DELETE FROM computer WHERE id = ?";
 	
 	/** START Singleton.CompanyDAO -- Lazy-Loading */
 
@@ -52,10 +53,8 @@ public class ComputerDAO {
 			statement.setString(1, computer.getName());
 			statement.setObject(2, computer.getIntroduced());
 			statement.setObject(3, computer.getDiscontinued());
-			statement.setInt(4, (int) computer.getCompany().getId());
-	
+			statement.setInt(4, computer.getCompany().getId());
 			statement.executeUpdate();
-			
 			System.out.println("Computer " + computer.getName() + " created successfully!");
 		} catch (SQLException error) {
 			throw new DAOException( error );
@@ -65,27 +64,22 @@ public class ComputerDAO {
 		return null;
 	}
 
-	public ArrayList<Computer> findAllComputers() throws DAOException {	
-		ArrayList<Computer> c = new ArrayList<>();
-		
+	public List<Computer> findAllComputers() throws DAOException {	
+		List<Computer> c = new ArrayList<>();
 		try {
-			/** On se connecte, on prépare la requete, on l'éxécute et on récupère le resultat*/
 			connect = MySQLConnection.getConnectionInstance();
 			statement = connect.prepareStatement(FIND_ALL_COMPUTERS);
-			System.out.println("Connected !!!");
-			
-			while (res.next()) {
-				
+			res= statement.executeQuery();
+			while (res.next()) {	
 				c.add(new Computer(	res.getInt("id"),
 									res.getString("name"),
-									res.getTimestamp("introduced").toLocalDateTime(),
-									res.getTimestamp("discontinued").toLocalDateTime(),
+									res.getTimestamp("introduced")==null?null:res.getTimestamp("introduced").toLocalDateTime().toLocalDate(),
+									res.getTimestamp("discontinued")==null?null:res.getTimestamp("discontinued").toLocalDateTime().toLocalDate(),
 									new Company(res.getInt("id"),
 												res.getString("name"))
 								)
 					);
 			}
-			statement.executeUpdate();
 		} catch (SQLException error) {
 			throw new DAOException( error );
 		}
@@ -97,15 +91,13 @@ public class ComputerDAO {
 		try {
 			connect = MySQLConnection.getConnectionInstance();
 			statement = connect.prepareStatement(FIND_COMPUTER_BY_ID);
-			
 			System.out.println("Connected !!!");
-			
-			statement.executeUpdate();
+			res= statement.executeQuery();
 			if (res.first()) {
 			Computer computer = new Computer( res.getInt("id"),
 									 res.getString("name"),
-									 res.getTimestamp("introduced").toLocalDateTime(),
-									 res.getTimestamp("discontinued").toLocalDateTime(),
+									 res.getTimestamp("introduced").toLocalDateTime().toLocalDate(),
+									 res.getTimestamp("discontinued").toLocalDateTime().toLocalDate(),
 									 new Company(res.getInt("id"),
 											     res.getString("name"))
 									 );

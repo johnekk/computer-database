@@ -17,7 +17,7 @@ public class MySQLConnection {
 		if(connect == null) {
 			try {
 				connect = DriverManager.getConnection(url, user, password);
-			} catch (SQLException sqle) {
+	 		} catch (SQLException sqle) {
 				throw new DAOConfigurationException("Erreur lors de la connexion: " + sqle);
 			}	
 		}

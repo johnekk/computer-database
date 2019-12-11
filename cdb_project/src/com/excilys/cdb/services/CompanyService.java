@@ -1,16 +1,14 @@
 package com.excilys.cdb.services;
 
-import java.util.ArrayList;
-
-import com.excilys.cdb.dao.exceptions.DAOException;
 import com.excilys.cdb.dao.impl.CompanyDAO;
 import com.excilys.cdb.model.Company;
 
 public class CompanyService {
 	
-	private CompanyDAO companyDAO;
+	private static CompanyDAO companyDAO = CompanyDAO.getCompanyDAOInstance();
 	
 	/** START Singleton.ComputerService -- Lazy-Loading */
+	
 	private CompanyService() {};
 	
 	private static CompanyService companyService = null;
@@ -24,6 +22,9 @@ public class CompanyService {
 	
 	/** END Singleton.ComputerService*/
 	
-	public ArrayList<Company> findAllCompanies() throws DAOException { return companyDAO.findAllCompanies(); };
-
+	public static void findAllCompanies() {
+        for(Company company : companyDAO.findAllCompanies()) {
+            System.out.println(company.toString());
+        }
+	}
 }
